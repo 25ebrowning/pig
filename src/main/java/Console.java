@@ -1,8 +1,11 @@
+package utils;
 import java.util.HashMap;
 import java.util.Scanner;
-public class T {
+public class Console {
+  public static Scanner scanner;
   public static final HashMap<String, Integer> colors;
   static {
+    scanner = new Scanner(System.in);
       colors = new HashMap<String, Integer>();
     
       colors.put("black", 30);
@@ -60,13 +63,19 @@ public class T {
     System.out.println();
   }
   public static String in() {
-    Scanner sc = new Scanner(System.in);
-    String result = sc.nextLine();
-    sc.close();
-    return result;
+    String result = scanner.nextLine();
+    return result.trim();
   }
   public static String in(String text) {
     out(text);
     return in();
+  }
+
+  public static void notify(String text) {
+    reset();
+      fg("yellow");
+      bold();
+      ln("! " + text);
+    reset();
   }
 }
