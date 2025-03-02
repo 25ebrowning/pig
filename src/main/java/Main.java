@@ -1,3 +1,4 @@
+
 import processing.core.PApplet;
 
 public class Main extends PApplet {
@@ -12,7 +13,7 @@ public class Main extends PApplet {
   }
 
   public static void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "MySketch" };
+    String[] appletArgs = new String[] { "Main" }; // Changed from "MySketch" to "Main"
     PApplet.main(appletArgs);
   }
 }
