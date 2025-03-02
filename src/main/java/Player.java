@@ -7,7 +7,11 @@ public class Player {
     this.configure();
   }
   public void configure() {
-    this.setName(Scan.scan("What is your name? "));
+    T.fg("green");
+    T.bold();
+    T.out("What is your name? ");
+    T.reset();
+    this.name = T.in();
   }
   public void setName(String name) {
     this.name = name;
