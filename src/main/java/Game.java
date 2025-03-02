@@ -5,10 +5,14 @@ import com.github.lalyos.jfiglet.FigletFont;
 public class Game {
   public static void intro() {
     ln("welcome to...\n");
-    String output = FigletFont.convertOneLine("pig");
-    String[] lines = output.split("\n");
-    for (String line : lines) {
-      ln(line);
+    try {
+      String output = FigletFont.convertOneLine("pig");
+      String[] lines = output.split("\n");
+      for (String line : lines) {
+        ln(line);
+      }
+    } catch (Exception e) {
+      ln("Error displaying ASCII art: " + e.getMessage());
     }
   }
   private ArrayList<Player> players;
