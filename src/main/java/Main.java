@@ -1,20 +1,18 @@
-
 import processing.core.PApplet;
 
 public class Main extends PApplet {
+
   public void settings() {
-    size(400, 400);
+    size(500, 500);
   }
-  
-  public void setup() {
-    background(200);
+
+  public void draw(){
+    background(64);
+    ellipse(mouseX, mouseY, 20, 20);
   }
-  
-  public void draw() {
-    ellipse(width/2, height/2, 50, 50);
-  }
-  
-  public static void main(String[] args) {
-    PApplet.main("Main");
+
+  public static void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "MySketch" };
+    PApplet.main(appletArgs);
   }
 }
