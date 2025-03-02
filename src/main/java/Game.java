@@ -8,7 +8,7 @@ public class Game {
     CPU.reset();
   }
   public void count() {
-    notify("There " + (players.size() == 1 ? "is" : "are") + " now " + players.size() + " player" + (players.size() == 1 ? "" : "s"));
+    alert("There " + (players.size() == 1 ? "is" : "are") + " now " + players.size() + " player" + (players.size() == 1 ? "" : "s"));
   }
   public void addPlayer() {
     players.add(new Player(this));
@@ -27,7 +27,7 @@ public class Game {
     count();
   }
   public void help() {
-    notify("Commands:\n" +
+    alert("Commands:\n" +
              "  p - add player\n" +
              "  c - add CPU\n" +
              "  v - view players\n" +
@@ -38,27 +38,27 @@ public class Game {
              "  q - quit");
   }
   public void invalid() {
-    notify("Invalid command. Type \"h\" for help");
+    alert("Invalid command. Type \"h\" for help");
   }
   public void deletePlayer() {
     if (players.size() < 1) {
-      notify("There are no players yet");
+      alert("There are no players yet");
       return;
     } else if (players.size() == 1) {
       while (true) {
-        notify("There is only one player left");
+        alert("There is only one player left");
         out("Delete \"");
         out(players.get(0).overview());
         reset();
         String response = in("\"? (y/n)\n> ");
         switch (response) {
           case "y":
-            notify("Player \"" + players.get(0).getName() + "\" removed successfully");
+            alert("Player \"" + players.get(0).getName() + "\" removed successfully");
             players.remove(0);
             count();
             return;
           case "n":
-            notify("No action taken");
+            alert("No action taken");
             count();
             return;
           default:
@@ -75,21 +75,21 @@ public class Game {
       try {
         int index = Integer.parseInt(tmpIndex);
         if (index < 1 || index > players.size()) {
-          notify("Invalid range");
+          alert("Invalid range");
           continue;
         }
-        notify("Player \"" + players.get(index - 1).getName() + "\" removed successfully");
+        alert("Player \"" + players.get(index - 1).getName() + "\" removed successfully");
         players.remove(index - 1);
         return;
       } catch (NumberFormatException e) {
-        notify("Not a number");
+        alert("Not a number");
         continue;
       }
     }
   }
 
   public void viewPlayers() {
-    notify("Players:");
+    alert("Players:");
     int i = 1;
     for (Player player : players) {
       fg("yellow");

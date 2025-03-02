@@ -71,7 +71,7 @@ public class Console {
     return in();
   }
 
-  public static void notify(String text) {
+  public static void alert(String text) {
     reset();
       fg("yellow");
       bold();

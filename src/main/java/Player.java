@@ -19,26 +19,26 @@ public class Player {
     return ready;
   }
   public void configure() {
-    notify("Adding player...");
+    alert("Adding player...");
     while (true) {
       String tmpName = in("Enter your name:\n> ");
       if (tmpName.length() < 1) {
         continue;
       } else if (tmpName.length() > characterLimit) {
-        notify("Name exceeds character limit (" + characterLimit + ")");
+        alert("Name exceeds character limit (" + characterLimit + ")");
         continue;
       } else if (!game.checkName(tmpName)) {
-        notify("Name already taken");
+        alert("Name already taken");
         continue;
       } else if (tmpName.contains("CPU ")) {
-        notify("You are not a CPU");
+        alert("You are not a CPU");
         continue;
       } else {
         this.name = tmpName;
         break;
       }
     }
-    notify("Player \"" + this.name + "\" added successfully");
+    alert("Player \"" + this.name + "\" added successfully");
     ready = true;
   }
   public String overview() {

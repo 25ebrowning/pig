@@ -6,23 +6,23 @@ public class CPU extends Player {
     super(game);
   }
   public void configure() {
-    notify("Adding CPU...");
+    alert("Adding CPU...");
     this.name = "CPU " + (++numCPUs);
     while (true) {
       try {
         String tempLvl = in("Set difficulty for the CPU (1-10):\n> ");
         this.lvl = Integer.parseInt(tempLvl);
         if (this.lvl < 1 || this.lvl > 10) {
-          notify("Invalid range");
+          alert("Invalid range");
           continue;
         }
         break;
       } catch (NumberFormatException e) {
-        notify("Not a number");
+        alert("Not a number");
       }
     }
     
-    notify("CPU \"" + this.name + "\" (lvl " + this.lvl + ") added successfully");
+    alert("CPU \"" + this.name + "\" (lvl " + this.lvl + ") added successfully");
   }
   public static void reset() {
     numCPUs = 0;
