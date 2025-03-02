@@ -24,6 +24,12 @@ public class CPU extends Player {
     
     alert("CPU \"" + this.name + "\" (lvl " + this.lvl + ") added successfully");
   }
+  public void decrement() {
+    name = "CPU " + (Integer.parseInt(name.substring(4)) - 1);
+  }
+  public static void decrementAll() {
+    numCPUs--;
+  }
   public static void reset() {
     numCPUs = 0;
   }

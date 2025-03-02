@@ -1,7 +1,16 @@
 import java.util.ArrayList;
-import utils.Console.*;
+import static utils.Console.*;
+import com.github.lalyos.jfiglet.FigletFont;
 
 public class Game {
+  public static void intro() {
+    ln("welcome to...\n");
+    String output = FigletFont.convertOneLine("pig");
+    String[] lines = output.split("\n");
+    for (String line : lines) {
+      ln(line);
+    }
+  }
   private ArrayList<Player> players;
   public Game() {
     players = new ArrayList<Player>();
@@ -25,6 +34,21 @@ public class Game {
   public void addCPU() {
     players.add(new CPU(this));
     count();
+  }
+  public void fixCPUs() {
+    ArrayList<CPU> cpus = new ArrayList<CPU>();
+    for (Player player : players) {
+      if (player instanceof CPU) cpus.add((CPU) player);
+    }
+    if (cpus.size() < 1) return;
+    int tracker = 1;
+    for (CPU cpu : cpus) {
+      if (Integer.parseInt(cpu.getName().substring(4)) > tracker) {
+        cpu.decrement();
+      }
+      tracker++;
+    }
+    CPU.decrementAll();
   }
   public void help() {
     alert("Commands:\n" +
@@ -54,7 +78,10 @@ public class Game {
         switch (response) {
           case "y":
             alert("Player \"" + players.get(0).getName() + "\" removed successfully");
-            players.remove(0);
+            if (players.get(0) instanceof CPU) {
+              players.remove(0);
+              fixCPUs();
+            } else players.remove(0);
             count();
             return;
           case "n":
@@ -68,9 +95,13 @@ public class Game {
     }
     viewPlayers();
     while (true) {
-      String tmpIndex = in("Who do you want to delete? (1-" + players.size() + ")\n> ");
+      String tmpIndex = in("Who do you want to delete? (1-" + players.size() + ") (c to cancel)\n> ");
       if (tmpIndex.length() < 1) {
         continue;
+      }
+      if (tmpIndex.equals("c")) {
+        alert("Removal canceled");
+        return;
       }
       try {
         int index = Integer.parseInt(tmpIndex);
@@ -79,7 +110,10 @@ public class Game {
           continue;
         }
         alert("Player \"" + players.get(index - 1).getName() + "\" removed successfully");
-        players.remove(index - 1);
+        if (players.get(index - 1) instanceof CPU) {
+          players.remove(index - 1);
+          fixCPUs();
+        } else players.remove(index - 1);
         return;
       } catch (NumberFormatException e) {
         alert("Not a number");

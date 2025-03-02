@@ -62,6 +62,9 @@ public class Console {
     out(text);
     System.out.println();
   }
+  public static void ln() {
+    System.out.println();
+  }
   public static String in() {
     String result = scanner.nextLine();
     return result.trim();
