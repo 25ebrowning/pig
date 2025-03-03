@@ -81,4 +81,14 @@ public class Console {
       ln("! " + text);
     reset();
   }
+  public static void ellipsis(int delay, int dots) {
+    for (int i = 0; i < dots; i++) {
+      out(".");
+      try {
+        Thread.sleep(delay);
+      } catch (Exception e) {
+        alert("Error");
+      }
+    }
+  }
 }

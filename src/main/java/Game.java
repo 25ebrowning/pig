@@ -3,22 +3,31 @@ import static utils.Console.*;
 import com.github.lalyos.jfiglet.FigletFont;
 
 public class Game {
-  public static void intro() {
-    ln("welcome to...\n");
-    try {
-      String output = FigletFont.convertOneLine("pig");
-      String[] lines = output.split("\n");
-      for (String line : lines) {
-        ln(line);
-      }
-    } catch (Exception e) {
-      ln("Error displaying ASCII art: " + e.getMessage());
-    }
-  }
+  private int[][] scores;
   private ArrayList<Player> players;
   public Game() {
     players = new ArrayList<Player>();
     CPU.reset();
+  }
+  public static void intro() {
+    out("welcome to");
+    ellipsis(50, 4);
+    ln();
+    try {
+      String output = FigletFont.convertOneLine("pig");
+      String[] lines = output.split("\n");
+      fg("magenta");
+      for (String line : lines) {
+        Thread.sleep(50);
+        ln(line);
+      }
+      
+    } catch (Exception e) {
+      alert("FigletFont error");
+    }
+    ln();
+    reset();
+    help();
   }
   public void count() {
     alert("There " + (players.size() == 1 ? "is" : "are") + " now " + players.size() + " player" + (players.size() == 1 ? "" : "s"));
@@ -45,16 +54,17 @@ public class Game {
       if (player instanceof CPU) cpus.add((CPU) player);
     }
     if (cpus.size() < 1) return;
-    int tracker = 1;
-    for (CPU cpu : cpus) {
-      if (Integer.parseInt(cpu.getName().substring(4)) > tracker) {
-        cpu.decrement();
-      }
-      tracker++;
-    }
+    fixCPUhelper(cpus, 0);
     CPU.decrementAll();
   }
-  public void help() {
+  private void fixCPUhelper(ArrayList<CPU> cpus, int index) {
+    if (index >= cpus.size()) return;
+    if (Integer.parseInt(cpus.get(index).getName().substring(4)) > index + 1) {
+      cpus.get(index).decrement();
+    }
+    fixCPUhelper(cpus, index+1);
+  }
+  public static void help() {
     alert("Commands:\n" +
              "  p - add player\n" +
              "  c - add CPU\n" +
@@ -125,7 +135,6 @@ public class Game {
       }
     }
   }
-
   public void viewPlayers() {
     alert("Players:");
     int i = 1;
@@ -151,9 +160,9 @@ public class Game {
       case "d":
         deletePlayer(); break;
       case "s":
-        break;
+        start(); break;
       case "r":
-        break;
+        rules(); break;
       case "h":
         help(); break;
       case "q":
@@ -161,5 +170,78 @@ public class Game {
       default:
         invalid(); break;
     }
+  }
+  public static void rules() {
+    alert("Welcome to Pig! Rules are as follows:\n" +
+         "  1. Roll (r) or hold (h) each turn\n" +
+         "  2. Roll as much as you would like\n" +
+         "  3. If you roll a 1, your turn is over\n" +
+         "  4. Holding counts your rolls towards your score\n" +
+         "  5. The first player to reach 100 points wins\n");
+    alert("Have fun!");
+  }
+  public void start() {
+    alert("Starting game...");
+    scores = new int[1][players.size()];
+
+    while (true) {
+      for (int score : scores[0]) {
+        score = -1;
+      }
+      int count = 0;
+      for (Player player : players) {
+        player.turn();
+        scores[0][count++] = player.getScore();
+        viewStandings(null);
+      }
+      int tempScores[][] = new int[scores.length + 1][scores[0].length];
+      for (int i = 0; i < scores.length; i++) {
+        tempScores[i+1] = scores[i];
+      }
+      scores = tempScores;
+    }
+  }
+  public void viewStandings(Player player) {
+    alert("Standings:");
+    ArrayList<Player> playerList = sortedPlayers(players);
+    for (int i = 0; i < playerList.size(); i++) {
+      reset();
+      fg("yellow");
+      bold();
+      out(" ".repeat(3) + (i+1) + ". ");
+      if (playerList.get(i) == player) {
+        out(playerList.get(i).overview());
+        fg("yellow");
+        ln(": " + playerList.get(i).getScore() + " (projected: " + playerList.get(i).getProjected() + ")");
+      } else {
+        bold(false);
+        out(playerList.get(i).overview());
+        fg("yellow");
+        ln(": " + playerList.get(i).getScore());
+      }
+    }
+    
+  }
+  public ArrayList<Player> sortedPlayers(ArrayList<Player> players) {
+    ArrayList<Player> sorted = new ArrayList<Player>();
+    for (Player player : players) {
+      if (sorted.size() == 0) {
+        sorted.add(player);
+        continue;
+      }
+      int l = 0;
+      int r = sorted.size() - 1;
+      int t = player.getScore();
+      while (l <= r) {
+        int m = l + (r - l) / 2;
+        if (sorted.get(m).getScore() > t) {
+          l = m + 1;
+        } else {
+          r = m - 1;
+        }
+      }
+      sorted.add(l, player);
+    }
+    return sorted;
   }
 }
