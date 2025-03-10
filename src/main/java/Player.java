@@ -97,7 +97,4 @@ public class Player {
     fg("green");
     return this.name;
   }
-  public void roll() {
-    dice.rollVisual();
-  }
 }

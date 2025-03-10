@@ -12,8 +12,9 @@ public class Dice {
   }
   public int rollVisual() {
     int result = roll();
+    reset();
     out("Rolling");
-    ellipsis(500, 5);
+    ellipsis(100, 5);
     switch (result) {
       case 1:
         fg("red"); break;

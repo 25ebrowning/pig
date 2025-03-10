@@ -1,6 +1,7 @@
 package utils;
 import java.util.HashMap;
 import java.util.Scanner;
+import com.github.lalyos.jfiglet.FigletFont;
 public class Console {
   public static Scanner scanner;
   public static final HashMap<String, Integer> colors;
@@ -75,11 +76,14 @@ public class Console {
   }
 
   public static void alert(String text) {
+    alert(text, true);
+  }
+  public static void alert(String text, boolean reset) {
     reset();
-      fg("yellow");
-      bold();
-      ln("! " + text);
-    reset();
+    fg("yellow");
+    bold();
+    out("! " + text + (reset ? "\n" : ""));
+    if (reset) reset();
   }
   public static void ellipsis(int delay, int dots) {
     for (int i = 0; i < dots; i++) {
@@ -89,6 +93,19 @@ public class Console {
       } catch (Exception e) {
         alert("Error");
       }
+    }
+  }
+  public static void fig(String text, int delay) {
+    try {
+      String output = FigletFont.convertOneLine(text);
+      String[] lines = output.split("\n");
+      for (String line : lines) {
+        Thread.sleep(delay);
+        ln(line);
+      }
+
+    } catch (Exception e) {
+      alert("FigletFont error");
     }
   }
 }

@@ -1,30 +1,22 @@
 import java.util.ArrayList;
 import static utils.Console.*;
-import com.github.lalyos.jfiglet.FigletFont;
+
 
 public class Game {
+  private boolean isOver;
   private int[][] scores;
   private ArrayList<Player> players;
   public Game() {
+    isOver = false;
     players = new ArrayList<Player>();
     CPU.reset();
   }
   public static void intro() {
     out("welcome to");
     ellipsis(50, 4);
+    fg("magenta");
     ln();
-    try {
-      String output = FigletFont.convertOneLine("pig");
-      String[] lines = output.split("\n");
-      fg("magenta");
-      for (String line : lines) {
-        Thread.sleep(50);
-        ln(line);
-      }
-      
-    } catch (Exception e) {
-      alert("FigletFont error");
-    }
+    fig("pig", 50);
     ln();
     reset();
     help();
@@ -192,6 +184,10 @@ public class Game {
       for (Player player : players) {
         player.turn();
         scores[0][count++] = player.getScore();
+        if (player.getScore() >= 100) {
+          win (player);
+          return;
+        }
         viewStandings(null);
       }
       int tempScores[][] = new int[scores.length + 1][scores[0].length];
@@ -200,6 +196,18 @@ public class Game {
       }
       scores = tempScores;
     }
+  }
+  public void win(Player player) {
+    alert("And the winner is", false);
+    ellipsis(100, 10);
+    ln();
+    reset();
+    player.overview();
+    fig(player.getName(), 50);
+    ln();
+    reset();
+    viewStandings(player);
+    isOver = true;
   }
   public void viewStandings(Player player) {
     alert("Standings:");
@@ -243,5 +251,15 @@ public class Game {
       sorted.add(l, player);
     }
     return sorted;
+  }
+  public int maxScore(Player player) {
+    ArrayList<Player> players = sortedPlayers(this.players);
+    if (players.get(0) == player) {
+      return players.get(1).getScore();
+    }
+    return players.get(0).getScore();
+  }
+  public boolean getIsOver() {
+    return isOver;
   }
 }

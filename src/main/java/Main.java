@@ -3,10 +3,12 @@
 
 public class Main{
   public static void main(String[] args) {
-    Game game = new Game();
     Game.intro();
     while(true) {
-      game.prompt();
+      Game game = new Game();
+      while(!game.getIsOver()) {
+        game.prompt();
+      }
     }
   }
 }
