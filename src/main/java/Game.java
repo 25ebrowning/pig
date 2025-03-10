@@ -219,12 +219,12 @@ public class Game {
   public void prompt() {
 
     // Prompting the user...
+    T.reset();
     String command = T.in("> ");
 
     // Commands are all 1 character in length
     if (command.length() != 1) {
       invalid();
-      prompt();
     }
 
     // Switch on input
@@ -233,19 +233,19 @@ public class Game {
 
       // Add player
       case 'p':
-        addPlayer(); prompt();
+        addPlayer(); break;
 
       // Add CPU
       case 'c':
-        addCPU(); prompt();
+        addCPU(); break;
 
       // View players
       case 'v':
-        viewPlayers(); prompt();
+        viewPlayers(); break;
 
       // Delete player
       case 'd':
-        deletePlayer(); prompt();
+        deletePlayer(); break;
 
       // Start game
       case 's':
@@ -253,20 +253,21 @@ public class Game {
 
       // View rules
       case 'r':
-        rules(); prompt();
+        rules(); break;
 
       // Help dialogue
       case 'h':
-        help(); prompt();
+        help(); break;
 
       // Quit
       case 'q':
-        System.exit(0);
+        System.exit(0); break;
 
-      // Recursion on invalid input
+      // Invalid input
       default:
-        invalid(); prompt();
+        invalid(); break;
     }
+    prompt();
   }
 
   // Rule dialogue
