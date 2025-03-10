@@ -1,58 +1,89 @@
-import static utils.Console.*;
+// CPU version of Player
 public class CPU extends Player {
+
+  // PIVs
   private static int numCPUs = 0;
   private int lvl;
+
+  // Constructor
   public CPU (Game game) {
     super(game);
   }
+
+  // Prompt user for CPU lvl
   public void configure() {
-    alert("Adding CPU...");
+    T.alert("Adding CPU...");
     this.name = "CPU " + (++numCPUs);
+
+    // Validate input
     while (true) {
       try {
-        String tempLvl = in("Set difficulty for the CPU (1-10):\n> ");
+        String tempLvl = T.in("Set difficulty for the CPU (1-10):\n> ");
         this.lvl = Integer.parseInt(tempLvl);
+
+        // Invalid range
         if (this.lvl < 1 || this.lvl > 10) {
-          alert("Invalid range");
+          T.alert("Invalid range");
           continue;
         }
         break;
       } catch (NumberFormatException e) {
-        alert("Not a number");
+
+        // Not a number
+        T.alert("Not a number");
       }
     }
     
-    alert("CPU \"" + this.name + "\" (lvl " + this.lvl + ") added successfully");
+  T.alert("CPU \"" + this.name + "\" (lvl " + this.lvl + ") added successfully");
   }
+
+  // CPU does turn by itself
   public boolean turnInput(int currScore, int score) {
+
     String name = overview();
-    reset();
-    alert(name + " is thinking", false);
-    ellipsis(100, 5);
+    
+    // Clear overview() formatting
+    T.reset();
+    T.alert(name + " is thinking", false);
+    T.ellipsis(100, 5);
+
+    // Decision logic
     int threshold = 15 + ((lvl - 1) / 2) * 2;
     int diff = getScore() - game.maxScore(this);
     threshold += diff / 10;
     boolean roll = currScore < threshold;
-    if (roll) {
-      ln(" Roll!");
-      reset();
+
+    // Rolling
+    if (roll && currScore < 100) {
+      T.ln(" Roll!");
+      T.reset();
       return true;
     }
-    ln(" Hold!");
-    reset();
+
+    // Holding
+    T.ln(" Hold!");
+    T.reset();
     return false;
   }
+
+  // Decrease current CPU number
   public void decrement() {
     name = "CPU " + (Integer.parseInt(name.substring(4)) - 1);
   }
+
+  // Decrease CPU counter
   public static void decrementAll() {
     numCPUs--;
   }
+
+  // Reset CPU counter
   public static void reset() {
     numCPUs = 0;
   }
+
+  // Modified overview() with new formatting and CPU lvl
   public String overview() {
-    fg("blue");
+    T.fg("blue");
     return this.name + " (lvl " + this.lvl + ")";
   }
 }

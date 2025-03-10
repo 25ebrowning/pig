@@ -1,35 +1,51 @@
 import java.util.Random;
-import static utils.Console.*;
+
+// Dice class
 public class Dice {
+
+  // PIVs
   private Random random;
   private int sides;
+
+  // Constructor
   public Dice (int sides) {
     this.sides = sides;
     this.random = new Random();
   }
+
+  // Return random int from 1-sides, inclusive
   public int roll() {
     return this.random.nextInt(this.sides) + 1;
   }
+
+  // Animated roll()
   public int rollVisual() {
     int result = roll();
-    reset();
-    out("Rolling");
-    ellipsis(100, 5);
+
+    // Dialogue
+    T.reset();
+    T.out("Rolling");
+    T.ellipsis(100, 5);
+
+    // Coloring based on result
     switch (result) {
       case 1:
-        fg("red"); break;
+        T.fg("red"); break;
       case 2:
       case 3:
-        fg("yellow"); break;
+        T.fg("yellow"); break;
       case 4:
       case 5:
-        fg("blue"); break;
+        T.fg("blue"); break;
       case 6:
-        fg("green"); break;
+        T.fg("green"); break;
     }
-    bold();
-    ln(" " + result);
-    reset();
+
+    // Display result
+    T.bold();
+    T.ln(" " + result);
+    T.reset();
+    
     return result;
   }
 }

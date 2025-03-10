@@ -1,9 +1,12 @@
-package utils;
 import java.util.HashMap;
 import java.util.Scanner;
 import com.github.lalyos.jfiglet.FigletFont;
-public class Console {
+
+// Class with terminal utilities
+public class T {
   public static Scanner scanner;
+
+  // Color -> ANSI code lookup
   public static final HashMap<String, Integer> colors;
   static {
     scanner = new Scanner(System.in);
@@ -27,28 +30,44 @@ public class Console {
       colors.put("bright_cyan", 96);    
       colors.put("bright_white", 97);
   }
+
+  // set foreground color
   public static void fg (String color) {
     System.out.print("\u001b[" + colors.get(color) + "m");
   }
+
+  // set background color
   public static void bg (String color) {
     System.out.print("\u001b[48;5;" + colors.get(color) + "m");
   }
+
+  // reset ANSI stuff
   public static void reset () {
     System.out.print("\u001b[0m");
   }
+
+  // reset fg
   public static void resetFg () {
     System.out.print("\u001b[39m");
   }
+
+  // reset bg
   public static void resetBg () {
     System.out.print("\u001b[49m");
   }
+
+  // make text bold
   public static void bold (boolean on) {
     if (on) System.out.print("\u001b[1m");
     else System.out.print("\u001b[22m");
   }
+
+  // simpler bold
   public static void bold () {
     bold(true);
   }
+
+  // underline
   public static void under (boolean on) {
     if (on) System.out.print("\u001b[4m");
     else System.out.print("\u001b[24m");
@@ -56,6 +75,8 @@ public class Console {
   public static void under () {
     under(true);
   }
+
+  // Output
   public static void out(String text) {
     System.out.print(text);
   }
@@ -66,6 +87,8 @@ public class Console {
   public static void ln() {
     System.out.println();
   }
+
+  // Input
   public static String in() {
     String result = scanner.nextLine();
     return result.trim();
@@ -75,6 +98,7 @@ public class Console {
     return in();
   }
 
+  // Alert dialogue
   public static void alert(String text) {
     alert(text, true);
   }
@@ -85,6 +109,8 @@ public class Console {
     out("! " + text + (reset ? "\n" : ""));
     if (reset) reset();
   }
+
+  // Animated ellipsis
   public static void ellipsis(int delay, int dots) {
     for (int i = 0; i < dots; i++) {
       out(".");
@@ -95,9 +121,15 @@ public class Console {
       }
     }
   }
+
+  // Ascii art via FigletFont
   public static void fig(String text, int delay) {
+
+    // Required try-catch
     try {
       String output = FigletFont.convertOneLine(text);
+
+      // Split lines and output gradually
       String[] lines = output.split("\n");
       for (String line : lines) {
         Thread.sleep(delay);
@@ -105,6 +137,8 @@ public class Console {
       }
 
     } catch (Exception e) {
+
+      // Something went wrong
       alert("FigletFont error");
     }
   }
