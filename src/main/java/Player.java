@@ -84,6 +84,7 @@ public class Player {
 
   // Turn logic
   public void turn() {
+    currScore = 0;
     
     // Dialogue
     T.alert(getName() + "'s turn");

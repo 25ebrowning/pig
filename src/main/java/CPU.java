@@ -54,7 +54,7 @@ public class CPU extends Player {
     boolean roll = currScore < threshold;
 
     // Rolling
-    if (roll && score < 100) {
+    if (roll && getProjected() < 100) {
       T.ln(" Roll!");
       T.reset();
       return true;
